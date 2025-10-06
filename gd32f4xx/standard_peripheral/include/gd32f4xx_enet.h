@@ -69,9 +69,14 @@ OF SUCH DAMAGE.
 #ifndef _PHY_H_
 #define DP83848                          0
 #define LAN8700                          1
+/* Allow build system to override PHY selection/address */
+#ifndef PHY_TYPE
 #define PHY_TYPE                         DP83848
+#endif
 
+#ifndef PHY_ADDRESS
 #define PHY_ADDRESS                      ((uint16_t)1U)                         /*!< phy address determined by the hardware */
+#endif
 
 /* PHY read write timeouts */ 
 #define PHY_READ_TO                      ((uint32_t)0x0004FFFFU)                /*!< PHY read timeout */

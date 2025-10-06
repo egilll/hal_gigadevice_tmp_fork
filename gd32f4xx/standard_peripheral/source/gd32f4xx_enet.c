@@ -36,6 +36,17 @@ OF SUCH DAMAGE.
 
 #include "gd32f4xx_enet.h"
 
+#if defined(__ZEPHYR__)
+/*
+ * Legacy buffers used by the GigaDevice driver but which Zephyr doesn't use since it provides
+ * its own buffers. Note: Zephyr doesn't use any of the functions in this file that reference these.
+ */
+extern enet_descriptors_struct rxdesc_tab[ENET_RXBUF_NUM];
+extern enet_descriptors_struct txdesc_tab[ENET_TXBUF_NUM];
+extern uint8_t rx_buff[ENET_RXBUF_NUM][ENET_RXBUF_SIZE];
+extern uint8_t tx_buff[ENET_TXBUF_NUM][ENET_TXBUF_SIZE];
+#else
+
 #if defined   (__CC_ARM)                                    /*!< ARM compiler */
 __align(4)
 enet_descriptors_struct  rxdesc_tab[ENET_RXBUF_NUM];        /*!< ENET RxDMA descriptor */
@@ -63,6 +74,8 @@ uint8_t rx_buff[ENET_RXBUF_NUM][ENET_RXBUF_SIZE] __attribute__((aligned(4)));   
 uint8_t tx_buff[ENET_TXBUF_NUM][ENET_TXBUF_SIZE] __attribute__((aligned(4)));             /*!< ENET transmit buffer */
 
 #endif /* __CC_ARM */
+
+#endif /* __ZEPHYR__ */
 
 /* global transmit and receive descriptors pointers */
 enet_descriptors_struct  *dma_current_txdesc;
@@ -92,7 +105,8 @@ static const uint16_t enet_reg_tab[] = {
 static void enet_default_init(void);
 #ifdef USE_DELAY
 /* user can provide more timing precise _ENET_DELAY_ function */
-#define _ENET_DELAY_                              delay_ms
+extern void eth_gd32_delay(uint32_t ticks);
+#define _ENET_DELAY_                              eth_gd32_delay
 #else
 /* insert a delay time */
 static void enet_delay(uint32_t ncount);
