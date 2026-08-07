@@ -63,6 +63,11 @@
 /** TIMER3 (remap) */
 #define GD32_TIMER3_RMP		GD32_REMAP(0U, 12U, 0x1U, 1U)
 
+/** Ethernet (no remap) */
+#define GD32_ETH_NORMP		GD32_REMAP(0U, 21U, 0x1U, 0U)
+/** Ethernet (remap) */
+#define GD32_ETH_RMP		GD32_REMAP(0U, 21U, 0x1U, 1U)
+
 /** CAN0 (no remap) */
 #define GD32_CAN0_NORMP		GD32_REMAP(0U, 13U, 0x3U, 0U)
 /** CAN0 (partial remap) */
